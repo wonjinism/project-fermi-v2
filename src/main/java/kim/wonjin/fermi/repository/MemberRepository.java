@@ -1,0 +1,7 @@
+package kim.wonjin.fermi.repository;
+
+import kim.wonjin.fermi.domain.Member;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface MemberRepository extends JpaRepository<Member, Long> {
+}
