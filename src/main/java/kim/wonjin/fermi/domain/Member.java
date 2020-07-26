@@ -1,9 +1,8 @@
 package kim.wonjin.fermi.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import kim.wonjin.fermi.enums.UserType;
 import lombok.*;
-import org.hibernate.validator.constraints.UniqueElements;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -31,5 +30,11 @@ public class Member {
     private String password;
 
     @OneToMany(mappedBy = "createdBy")
-    private List<Question> questions;
+    private List<Question> questions = new ArrayList<>();
+
+    @OneToMany(mappedBy = "createdBy")
+    private List<Answer> answers = new ArrayList<>();
+
+    @Column(length = 1)
+    private String useYn = "Y";
 }

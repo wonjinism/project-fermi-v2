@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @ActiveProfiles("test") // 테스트 application-test.properties 사용할 경우
 @Import(TestConfig.class)
-public class QuestionControllerTest {
+public class QuestionApiControllerTest {
 
     @Autowired MockMvc mockMvc;
 
