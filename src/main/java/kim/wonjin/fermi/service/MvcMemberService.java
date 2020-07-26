@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 
 @Service
 @Transactional
@@ -51,6 +53,12 @@ public class MvcMemberService implements MemberService<Member, Long> {
     // 논리 삭제
     @Override
     public Member deleteMember(Member member) {
+        Optional<Member> targetMember =
+                memberRepository.findByIdAndUsername(member.getId(), member.getUsername());
+        if (!targetMember.isPresent()) {
+            throw new IllegalStateException("잘못된 유저 정보");
+        };
+        // 이메일 없는 init 타입
         member.setUseYn("N");
         return memberRepository.save(member);
     }

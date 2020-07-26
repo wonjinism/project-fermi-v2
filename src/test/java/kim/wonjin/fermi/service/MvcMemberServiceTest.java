@@ -137,12 +137,33 @@ public class MvcMemberServiceTest {
 
 
     @Test
-    @TestDescription("delete")
+    @TestDescription("delete-normal")
     public void deleteMember() {
-        // JPA의 삭제가 member 전체가 일치해야 삭제되는지 테스트 해보자.
-        // ID만 동일해도 삭제가 될 경우에는 id와 email을 체크하는 로직 추가 필요
+        // given
         Member newMember = createNewMemberForTest();
 
+        // when
+        mvcMemberService.deleteMember(newMember);
+
+        // then
+        // TODO JPA repository delete가 ID만 체크해서 삭제 하기 때문에 id와 email을 체크하는 로직 추가 필요
+        assertThat(newMember.getUseYn()).isEqualTo("N");
+        Optional<Member> deletedMember = memberRepository.findById(newMember.getId());
+        assertThat(deletedMember.get().getUseYn()).isEqualTo("N");
+    }
+
+    @Test
+    @TestDescription("delete-wrong email")
+    public void deleteMemberWrongEmail(){
+        // given
+        Member newMember = createNewMemberForTest();
+        Member targetMember = Member.builder()
+                .id(newMember.getId())
+                .email("wrong@gmail.com")
+                .build();
+
+        IllegalStateException e = assertThrows(IllegalStateException.class, () -> mvcMemberService.deleteMember(targetMember));
+        assertThat(e.getMessage()).isEqualTo("잘못된 유저 정보");
     }
 
     public Member createNewMemberForTest() {
